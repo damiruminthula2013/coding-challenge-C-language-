@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C Programming: Variables Mastery (10 Challenges)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-mono {
+      font-family: 'Fira Code', monospace;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+  <!-- Header Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 font-mono font-bold text-slate-950 text-xl">
+          C
+        </div>
+        <div>
+          <h1 class="font-bold text-lg text-slate-100 leading-tight">C Variables Mastery</h1>
+          <p class="text-xs text-slate-400">10 Progressive Coding Challenges</p>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex items-center gap-4 flex-grow max-w-md">
+        <div class="flex-grow bg-slate-800 rounded-full h-3 border border-slate-700/50 overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-[10%] transition-all duration-500"></div>
+        </div>
+        <span id="progress-text" class="text-xs font-mono font-semibold text-cyan-400 min-w-[3rem]">1 / 10</span>
+      </div>
+
+      <!-- Score Badge -->
+      <div class="flex items-center space-x-2 bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-lg">
+        <i class="fa-solid fa-trophy text-amber-400 text-sm"></i>
+        <span class="text-xs text-slate-400">Score:</span>
+        <span id="score-val" class="font-mono font-bold text-sm text-emerald-400">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Navigation & Problem List Sidebar -->
+    <aside class="lg:col-span-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between shadow-xl">
+      <div>
+        <h2 class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-3 px-1">Challenge Select</h2>
+        <div id="question-nav-list" class="space-y-1.5 max-h-[460px] overflow-y-auto pr-1">
+          <!-- Question Navigation Items Generated via JS -->
+        </div>
+      </div>
+
+      <!-- Hint Card -->
+      <div class="mt-4 pt-4 border-t border-slate-800">
+        <button id="toggle-hint-btn" onclick="toggleHint()" class="w-full text-left text-xs text-amber-400 hover:text-amber-300 flex items-center justify-between p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 transition">
+          <span class="flex items-center gap-2 font-medium">
+            <i class="fa-solid fa-lightbulb"></i> Need a Hint?
+          </span>
+          <i id="hint-icon" class="fa-solid fa-chevron-down text-xs"></i>
+        </button>
+        <div id="hint-box" class="hidden mt-2 p-3 text-xs text-slate-300 bg-slate-950 border border-amber-500/20 rounded-lg leading-relaxed font-mono">
+          <!-- Dynamic hint text -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Coding & Question Area -->
+    <section class="lg:col-span-8 flex flex-col gap-6">
+
+      <!-- Question Detail Box -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <span id="level-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            Easy
+          </span>
+          <span id="question-number-tag" class="text-xs font-mono text-slate-400">Question 1 of 10</span>
+        </div>
+        <h3 id="question-title" class="text-xl font-bold text-slate-100 mb-2"></h3>
+        <p id="question-desc" class="text-sm text-slate-300 leading-relaxed mb-4"></p>
+
+        <!-- Quick Syntax Tip -->
+        <div id="concept-tip" class="bg-slate-950 border-l-4 border-cyan-500 p-3 rounded-r-lg text-xs text-slate-400 leading-relaxed font-mono">
+          <!-- Dynamic concept lesson snippet -->
+        </div>
+      </div>
+
+      <!-- Interactive Code Editor -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col flex-grow">
+        <!-- Editor Topbar -->
+        <div class="bg-slate-950/80 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="text-xs text-slate-400 font-mono ml-2">main.c</span>
+          </div>
+          <button onclick="resetCurrentAnswer()" class="text-xs text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </button>
+        </div>
+
+        <!-- Code Block View -->
+        <div class="p-4 md:p-6 bg-[#090d16] font-mono text-sm leading-relaxed overflow-x-auto flex-grow text-slate-200">
+          <div id="code-snippet-pre">
+            <!-- Code formatted dynamic content with input -->
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="bg-slate-950/80 px-4 py-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <button id="prev-btn" onclick="prevQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed text-slate-300">
+              <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+            </button>
+            <button id="next-btn" onclick="nextQuestion()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed text-slate-300">
+              Next <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+
+          <button id="run-btn" onclick="checkAnswer()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/25 transition transform active:scale-95 flex items-center gap-2">
+            <i class="fa-solid fa-play text-xs"></i> Check Answer
+          </button>
+        </div>
+      </div>
+
+      <!-- Feedback / Output Window -->
+      <div id="output-box" class="hidden rounded-xl border p-4 text-sm font-mono transition-all">
+        <div class="flex items-start gap-3">
+          <i id="output-icon" class="fa-solid mt-0.5 text-base"></i>
+          <div>
+            <h4 id="output-heading" class="font-bold mb-1"></h4>
+            <p id="output-msg" class="text-xs leading-relaxed opacity-90"></p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // 10 Progressive C Variables Questions
+    const questions = [
+      {
+        id: 1,
+        title: "1. Declaring Whole Numbers",
+        difficulty: "Easy",
+        diffColor: "emerald",
+        desc: "In C, to store integer values (whole numbers), we use the <code>int</code> type. Complete the declaration for a variable named <strong>count</strong> holding <strong>5</strong>.",
+        tip: "Syntax: int variableName = value;",
+        hint: "Type the complete statement: int count = 5",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Create an integer variable named 'count' initialized to 5:`,
+        codeAfter: `\n    printf("Count is %d\\n", count);\n    return 0;\n}`,
+        solutionPattern: /^int\s+count\s*=\s*5;?$/
+      },
+      {
+        id: 2,
+        title: "2. Storing Decimal Numbers",
+        difficulty: "Easy",
+        diffColor: "emerald",
+        desc: "Single-precision decimal numbers use the <code>float</code> type. Create a variable named <strong>price</strong> set to <strong>19.99</strong>.",
+        tip: "Syntax: float variableName = 19.99f;",
+        hint: "Don't forget 'float price = 19.99;'",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Create a float variable named 'price' set to 19.99:`,
+        codeAfter: `\n    printf("Price: $%.2f\\n", price);\n    return 0;\n}`,
+        solutionPattern: /^float\s+price\s*=\s*19\.99f?;?$/
+      },
+      {
+        id: 3,
+        title: "3. Single Character Storage",
+        difficulty: "Easy",
+        diffColor: "emerald",
+        desc: "Characters in C use the <code>char</code> type and single quotes <code>' '</code>. Declare a variable named <strong>grade</strong> initialized to <strong>'A'</strong>.",
+        tip: "Characters must always be enclosed in single quotes like 'A', not double quotes.",
+        hint: "Syntax: char grade = 'A';",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Create a char variable 'grade' with value 'A':`,
+        codeAfter: `\n    printf("Grade: %c\\n", grade);\n    return 0;\n}`,
+        solutionPattern: /^char\s+grade\s*=\s*'A';?$/
+      },
+      {
+        id: 4,
+        title: "4. Updating Variable Values",
+        difficulty: "Easy-Medium",
+        diffColor: "cyan",
+        desc: "Variables can change value! Change the existing variable <strong>score</strong> to <strong>50</strong> (do not redeclare its type).",
+        tip: "When updating a variable, do NOT repeat the type name (e.g. use score = 50;, not int score = 50;).",
+        hint: "Write: score = 50;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    int score = 10;\n    // Update score to 50:`,
+        codeAfter: `\n    printf("Updated Score: %d\\n", score);\n    return 0;\n}`,
+        solutionPattern: /^score\s*=\s*50;?$/
+      },
+      {
+        id: 5,
+        title: "5. High Precision Decimals",
+        difficulty: "Medium",
+        diffColor: "cyan",
+        desc: "For precise large decimals, C uses <code>double</code>. Create a double variable named <strong>pi</strong> set to <strong>3.14159</strong>.",
+        tip: "Syntax: double variableName = 3.14159;",
+        hint: "Use double pi = 3.14159;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Declare double variable 'pi':`,
+        codeAfter: `\n    printf("Pi: %.5f\\n", pi);\n    return 0;\n}`,
+        solutionPattern: /^double\s+pi\s*=\s*3\.14159;?$/
+      },
+      {
+        id: 6,
+        title: "6. Variable Arithmetic",
+        difficulty: "Medium",
+        diffColor: "cyan",
+        desc: "Create an integer <strong>total</strong> that stores the sum of existing variables <strong>apples</strong> and <strong>bananas</strong>.",
+        tip: "You can assign expressions to variables: int total = a + b;",
+        hint: "Type: int total = apples + bananas;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    int apples = 12;\n    int bananas = 8;\n    // Calculate total fruits:`,
+        codeAfter: `\n    printf("Total fruits: %d\\n", total);\n    return 0;\n}`,
+        solutionPattern: /^int\s+total\s*=\s*apples\s*\+\s*bananas;?$/
+      },
+      {
+        id: 7,
+        title: "7. Constant Variables",
+        difficulty: "Medium-Hard",
+        diffColor: "indigo",
+        desc: "To prevent a variable from changing, prefix it with <code>const</code>. Create a read-only float variable <strong>TAX_RATE</strong> equal to <strong>0.07</strong>.",
+        tip: "Syntax: const float VAR_NAME = value;",
+        hint: "Type: const float TAX_RATE = 0.07;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Define a constant float TAX_RATE:`,
+        codeAfter: `\n    printf("Tax Rate: %.2f\\n", TAX_RATE);\n    return 0;\n}`,
+        solutionPattern: /^const\s+float\s+TAX_RATE\s*=\s*0\.07f?;?$/
+      },
+      {
+        id: 8,
+        title: "8. Unsigned Integer (Positive Only)",
+        difficulty: "Hard",
+        diffColor: "purple",
+        desc: "When a variable should never be negative, use <code>unsigned int</code>. Create an <strong>unsigned int</strong> named <strong>distance</strong> set to <strong>42000</strong>.",
+        tip: "Unsigned integers store non-negative values and can reach higher positive numbers.",
+        hint: "Type: unsigned int distance = 42000;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Declare an unsigned int 'distance':`,
+        codeAfter: `\n    printf("Distance: %u meters\\n", distance);\n    return 0;\n}`,
+        solutionPattern: /^unsigned\s+int\s+distance\s*=\s*42000;?$/
+      },
+      {
+        id: 9,
+        title: "9. Large Integers (long long)",
+        difficulty: "Hard",
+        diffColor: "purple",
+        desc: "For gigantic numbers beyond standard int limits (over 2 billion), use <code>long long</code>. Create a variable <strong>worldPopulation</strong> initialized to <strong>8000000000LL</strong>.",
+        tip: "Append 'LL' or 'll' to long long integer literals in C.",
+        hint: "Type: long long worldPopulation = 8000000000LL;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    // Declare a long long variable 'worldPopulation':`,
+        codeAfter: `\n    printf("World Population: %lld\\n", worldPopulation);\n    return 0;\n}`,
+        solutionPattern: /^long\s+long\s+worldPopulation\s*=\s*8000000000(LL|ll)?;?$/
+      },
+      {
+        id: 10,
+        title: "10. Type Casting (Conversion)",
+        difficulty: "Expert",
+        diffColor: "rose",
+        desc: "Calculate exact float average by casting <strong>totalScore</strong> to <code>(float)</code> before dividing by <strong>games</strong>, storing the result in a float variable named <strong>avg</strong>.",
+        tip: "Type casting syntax: float avg = (float)totalScore / games;",
+        hint: "Type: float avg = (float)totalScore / games;",
+        codeBefore: `#include <stdio.h>\n\nint main() {\n    int totalScore = 95;\n    int games = 4;\n    // Cast totalScore to float to preserve precision:`,
+        codeAfter: `\n    printf("Average Score: %.2f\\n", avg);\n    return 0;\n}`,
+        solutionPattern: /^float\s+avg\s*=\s*\(\s*float\s*\)\s*totalScore\s*\/\s*games;?$/
+      }
+    ];
+
+    // State Tracking
+    let currentIdx = 0;
+    let userAnswers = Array(questions.length).fill("");
+    let solvedStatus = Array(questions.length).fill(false);
+
+    // Initialize UI
+    window.onload = function() {
+      renderNavList();
+      loadQuestion(0);
+    };
+
+    function renderNavList() {
+      const listEl = document.getElementById('question-nav-list');
+      listEl.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const isCurrent = idx === currentIdx;
+        const isSolved = solvedStatus[idx];
+        
+        let borderClass = "border-slate-800 bg-slate-950/60 hover:bg-slate-800/80";
+        if (isCurrent) borderClass = "border-cyan-500 bg-cyan-950/30 text-cyan-300 font-semibold";
+        
+        let statusBadge = `<span class="w-2 h-2 rounded-full bg-slate-600"></span>`;
+        if (isSolved) {
+          statusBadge = `<i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i>`;
+        }
+
+        const item = document.createElement('button');
+        item.className = `w-full text-left p-2.5 rounded-xl border ${borderClass} transition flex items-center justify-between text-xs group`;
+        item.onclick = () => loadQuestion(idx);
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 truncate">
+            ${statusBadge}
+            <span class="truncate ${isCurrent ? 'text-cyan-300' : 'text-slate-300'}">${q.title}</span>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700/50 text-slate-400 group-hover:border-slate-600">
+            ${q.difficulty}
+          </span>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    function loadQuestion(idx) {
+      currentIdx = idx;
+      const q = questions[idx];
+
+      // Reset feedback output box
+      document.getElementById('output-box').className = "hidden";
+      document.getElementById('hint-box').classList.add('hidden');
+      document.getElementById('hint-icon').className = "fa-solid fa-chevron-down text-xs";
+
+      // Meta updates
+      document.getElementById('question-number-tag').innerText = `Question ${idx + 1} of 10`;
+      document.getElementById('question-title').innerText = q.title;
+      document.getElementById('question-desc').innerHTML = q.desc;
+      document.getElementById('concept-tip').innerText = q.tip;
+      document.getElementById('hint-box').innerText = q.hint;
+
+      // Difficulty Badge
+      const badge = document.getElementById('level-badge');
+      badge.innerText = q.difficulty;
+      badge.className = `px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border `;
+      
+      if (q.diffColor === "emerald") badge.classList.add("bg-emerald-500/10", "text-emerald-400", "border-emerald-500/20");
+      else if (q.diffColor === "cyan") badge.classList.add("bg-cyan-500/10", "text-cyan-400", "border-cyan-500/20");
+      else if (q.diffColor === "indigo") badge.classList.add("bg-indigo-500/10", "text-indigo-400", "border-indigo-500/20");
+      else if (q.diffColor === "purple") badge.classList.add("bg-purple-500/10", "text-purple-400", "border-purple-500/20");
+      else badge.classList.add("bg-rose-500/10", "text-rose-400", "border-rose-500/20");
+
+      // Build Interactive Editor Snippet
+      const snippetContainer = document.getElementById('code-snippet-pre');
+      const savedVal = userAnswers[idx] || "";
+      
+      snippetContainer.innerHTML = `
+        <span class="text-pink-400 font-bold">#include</span> <span class="text-emerald-300">&lt;stdio.h&gt;</span>\n\n
+        <span class="text-cyan-400 font-bold">int</span> <span class="text-amber-300 font-bold">main</span>() {\n
+        <span class="text-slate-500 italic">    ${q.codeBefore.split('\n')[3] || '// Complete the code:'}</span>\n
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="code-input" value="${escapeHtml(savedVal)}" 
+               placeholder="Type expression..." 
+               class="bg-slate-900 text-cyan-200 border-2 border-cyan-500/50 focus:border-cyan-400 focus:outline-none rounded-lg px-3 py-1 font-mono text-sm w-full max-w-md shadow-inner my-1"
+               oninput="onInputChange(this.value)"
+               onkeydown="if(event.key === 'Enter') checkAnswer()"
+               autocomplete="off" spellcheck="false">\n
+        <span class="text-slate-400">${q.codeAfter}</span>
+      `;
+
+      // Pagination state
+      document.getElementById('prev-btn').disabled = idx === 0;
+      document.getElementById('next-btn').disabled = idx === questions.length - 1;
+
+      updateProgressUI();
+      renderNavList();
+
+      // Auto focus input
+      setTimeout(() => {
+        const input = document.getElementById('code-input');
+        if (input) input.focus();
+      }, 50);
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/"/g, '&quot;');
+    }
+
+    function onInputChange(val) {
+      userAnswers[currentIdx] = val;
+    }
+
+    function resetCurrentAnswer() {
+      userAnswers[currentIdx] = "";
+      const input = document.getElementById('code-input');
+      if (input) {
+        input.value = "";
+        input.focus();
+      }
+      document.getElementById('output-box').className = "hidden";
+    }
+
+    function checkAnswer() {
+      const q = questions[currentIdx];
+      const rawVal = (document.getElementById('code-input').value || "").trim();
+      const outputBox = document.getElementById('output-box');
+      const outputHeading = document.getElementById('output-heading');
+      const outputMsg = document.getElementById('output-msg');
+      const outputIcon = document.getElementById('output-icon');
+
+      userAnswers[currentIdx] = rawVal;
+
+      if (!rawVal) {
+        showOutput(false, "Input Empty", "Please write your C code variable statement in the input field.");
+        return;
+      }
+
+      // Check pattern match
+      if (q.solutionPattern.test(rawVal)) {
+        solvedStatus[currentIdx] = true;
+        showOutput(true, "Compilation Successful! Output Validated", `Correct! Your variable declaration correctly fits standard C syntax rules.`);
+        renderNavList();
+        updateProgressUI();
+      } else {
+        showOutput(false, "Compilation/Syntax Error", `Your input "${rawVal}" did not match expected structure. Remember semicolons and exact C variable types/identifiers!`);
+      }
+    }
+
+    function showOutput(isSuccess, heading, msg) {
+      const box = document.getElementById('output-box');
+      const h = document.getElementById('output-heading');
+      const m = document.getElementById('output-msg');
+      const icon = document.getElementById('output-icon');
+
+      box.classList.remove('hidden', 'bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-300', 'bg-rose-500/10', 'border-rose-500/30', 'text-rose-300');
+
+      if (isSuccess) {
+        box.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-300');
+        icon.className = "fa-solid fa-circle-check text-emerald-400 mt-0.5";
+      } else {
+        box.classList.add('bg-rose-500/10', 'border-rose-500/30', 'text-rose-300');
+        icon.className = "fa-solid fa-triangle-exclamation text-rose-400 mt-0.5";
+      }
+
+      h.innerText = heading;
+      m.innerText = msg;
+    }
+
+    function updateProgressUI() {
+      const solvedCount = solvedStatus.filter(Boolean).length;
+      const progressPercent = ((currentIdx + 1) / questions.length) * 100;
+      
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+      document.getElementById('progress-text').innerText = `${currentIdx + 1} / ${questions.length}`;
+      document.getElementById('score-val').innerText = `${solvedCount * 10} pts`;
+    }
+
+    function prevQuestion() {
+      if (currentIdx > 0) loadQuestion(currentIdx - 1);
+    }
+
+    function nextQuestion() {
+      if (currentIdx < questions.length - 1) loadQuestion(currentIdx + 1);
+    }
+
+    function toggleHint() {
+      const hintBox = document.getElementById('hint-box');
+      const hintIcon = document.getElementById('hint-icon');
+      
+      if (hintBox.classList.contains('hidden')) {
+        hintBox.classList.remove('hidden');
+        hintIcon.className = "fa-solid fa-chevron-up text-xs";
+      } else {
+        hintBox.classList.add('hidden');
+        hintIcon.className = "fa-solid fa-chevron-down text-xs";
+      }
+    }
+  </script>
+</body>
+</html>
